@@ -1,0 +1,7 @@
+-- should play chords
+
+d1 $ s "play" # note "[60,62,64,67]" # gain 1
+
+d1 $ stack [  s "play" # note "60" # gain 1,  s "play" # note "62" # gain 1,  s "play" # note "64" # gain 1,  s "play" # note "67" # gain 1]
+
+draw $ note "60 62 64 67"
