@@ -1,7 +1,56 @@
 -- should play chords
 
+
 d1 $ s "play" # note "[60,62,64,67]" # gain 1
 
 d1 $ stack [  s "play" # note "60" # gain 1,  s "play" # note "62" # gain 1,  s "play" # note "64" # gain 1,  s "play" # note "67" # gain 1]
 
-draw $ note "60 62 64 67"
+-- arrpeggiate the chords
+d1 $ n "c2 a2 f2 e2" # sound "play" # gain 1
+
+d1 $ n "c4 a4 f2 e2" # sound "play" # gain 1
+
+d1 $ n "<c4 a4 f4 e4>" # sound "play" # gain 1 
+
+d1 $ n (off 0.125 (|+ 7) "<c a f e>") # sound "play" # gain 1
+
+d1 $ n (off 0.125 (|+ 7)  "<c*2 a(3,8) f(3,8,2) e*2>")
+  # sound "play" # gain 1
+  # legato 2 
+
+d1 $ jux rev $ n (off 0.125 (|+ 7)  "<c*2 a(3,8) f(3,8,2) e*2>")
+  # sound "play" # gain 1
+  # legato 2
+
+d1 $ jux rev $ n (off 0.125 (|+ 12) $ off 0.125 (|+ 7)  "<c*2 a(3,8) f(3,8,2) e*2>")
+  # sound "play" # gain 1
+  # legato 2
+
+-- initialization things
+hush
+
+:{
+let mf18Chords = 
+      [ "d4 f#4 a4 c#5 e5"
+      , "e4 g4 b4 d5 f#5"
+      , "f#4 a4 c#5 e5 g#5"
+      , "a4 c#5 e5 g#5 b5"
+      , "b4 d5 f#5 a5 c#6"
+      , "c#5 e5 g#5 b5 d#6"
+      , "d4 f#4 a4 c#5 e5" -- repeat of I
+      , "e4 g#4 b4 d#5 f#5"
+      , "f#4 a#4 c#5 e#5 g#5"
+      , "a4 c#5 e5 g#5 b5"
+      , "b4 d#5 f#5 a#5 c#6"
+      ]
+
+    reichArp chord = 
+      jux rev $ n (off 0.125 (|+ 12) $ off 0.125 (|+ 7) $ chord)
+        # sound "play"
+        # gain 1
+        # legato 2
+
+    reichSeq = slow 4 $ loopAt 4 $ cat $ map (reichArp . chord) mf18Chords
+:}
+
+d1 $ reichSeq

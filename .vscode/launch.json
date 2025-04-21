@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Start Tidal + osc2midi",
+      "configurations": ["Run osc2midi", "Run BootTidal"]
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Run osc2midi",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/osc2midi.py",
+      "args": ["--debug"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run BootTidal",
+      "type": "haskell",
+      "request": "launch",
+      "startup": "${workspaceFolder}/BootTidal.hs",
+      "workspace": "${workspaceFolder}",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "args": [],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Current File (debug flag)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "args": ["--debug"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
