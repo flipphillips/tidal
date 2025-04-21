@@ -1,0 +1,51 @@
+-- ▒▒▒▒▒▒ Tidal Notebook Template ▒▒▒▒▒▒
+-- Save this file and evaluate sections as needed.
+-- Use Shift+Enter (or equivalent) in VSCode with Tidal extension.
+
+-- ▒▒ Global Definitions ▒▒
+scaleName = "major"
+baseNote = "c4"
+rootMidi = 60  -- C4
+
+-- Map of voice instruments
+voice i = sound "play" # orbit i
+
+-- ▒▒ Chord Progressions ▒▒
+mf18Chords = 
+  [ "d4 f#4 a4 c#5 e5"
+  , "e4 g4 b4 d5 f#5"
+  , "f#4 a4 c#5 e5 g#5"
+  , "a4 c#5 e5 g#5 b5"
+  , "b4 d5 f#5 a5 c#6"
+  , "c#5 e5 g#5 b5 d#6"
+  , "d4 f#4 a4 c#5 e5" -- repeat of I
+  , "e4 g#4 b4 d#5 f#5"
+  , "f#4 a#4 c#5 e#5 g#5"
+  , "a4 c#5 e5 g#5 b5"
+  , "b4 d#5 f#5 a#5 c#6"
+  ]
+
+-- ▒▒ Arpeggiation Strategy ▒▒
+reichArp :: Pattern Double -> Pattern a
+reichArp chord = 
+  jux rev $ n (off 0.125 (|+ 12) $ off 0.125 (|+ 7) $ chord)
+    # sound "play"
+    # gain 1
+    # legato 2
+
+-- ▒▒ Chord helper functions ▒▒
+chord :: String -> Pattern Note
+-- chord s = pure $ chord' s >>= id
+chord s = pure $ chord' s >>= toNote
+
+showChord s = print (chord' s)
+
+-- ▒▒ Playback Execution ▒▒
+reichSeq = slow 4 $ loopAt 4 $ cat $ map (reichArp . chord) mf18Chords
+
+-- Evaluate this to begin:
+d1 $ reichSeq
+
+-- Example alternate patterns:
+-- d2 $ voice 1 $ n "60 64 67" # gain 0.8
+-- d3 $ slow 2 $ n (scale scaleName "0 2 4 5 7") # voice 2 # legato 1.5
