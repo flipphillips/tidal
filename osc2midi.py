@@ -100,5 +100,7 @@ signal.signal(signal.SIGTERM, cleanup_and_exit)
 handshake = SimpleUDPClient("127.0.0.1", 57120)
 handshake.send_message("/status", ["SuperDirt", "1.7.3"])
 # end of handshake
-
-server.serve_forever()
+try:
+    server.serve_forever()
+except KeyboardInterrupt:
+    cleanup_and_exit(signal.SIGINT, None)
